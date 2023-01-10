@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+const data = require(path.resolve(__dirname, "../usernames.json"));
 
 function GenerateRandomNumber(max) {
   return Math.floor(Math.random() * max);
@@ -15,6 +17,10 @@ app.post("/random", (req, res) => {
   }
   reqCount++;
   res.send({ request: reqCount, number: GenerateRandomNumber(max).toString() });
+});
+
+app.post("/username", (req, res) => {
+  res.send(data.usernames[GenerateRandomNumber(data.usernames.length)]);
 });
 
 app.listen(4000, () => console.log("Server is listening on port 4000"));
