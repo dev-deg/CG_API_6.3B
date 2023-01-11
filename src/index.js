@@ -19,12 +19,6 @@ app.post("/random", (req, res) => {
   res.send({ request: reqCount, number: GenerateRandomNumber(max).toString() });
 });
 
-async function myAsyncFilterFunc(u, start) {
-  return new Promise((res) => {
-    u.substring(0, start.length) == start;
-  });
-}
-
 app.post("/username", async (req, res) => {
   var start = "";
   if (req.query.start != null) {
@@ -35,8 +29,6 @@ app.post("/username", async (req, res) => {
     if (start.length > 3) {
       start = start.substring(0, 3);
     }
-    //BUG ->>
-
     var filteredUsernames = [];
     data.usernames.forEach((u) => {
       if (u.substring(0, start.length) == start) {
