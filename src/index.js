@@ -19,9 +19,14 @@ app.post("/random", (req, res) => {
   res.send({ request: reqCount, number: GenerateRandomNumber(max).toString() });
 });
 
-app.post("/username", (req, res) => {
+async function myAsyncFilterFunc(u, start) {
+  return new Promise((res) => {
+    u.substring(0, start.length) == start;
+  });
+}
+
+app.post("/username", async (req, res) => {
   var start = "";
-  var filteredUsernames;
   if (req.query.start != null) {
     start = req.query.start;
   }
@@ -31,8 +36,12 @@ app.post("/username", (req, res) => {
       start = start.substring(0, 3);
     }
     //BUG ->>
-    filteredUsernames = data.usernames.filter((u) => {
-      u.substring(0, start.length) == start;
+
+    var filteredUsernames = [];
+    data.usernames.forEach((u) => {
+      if (u.substring(0, start.length) == start) {
+        filteredUsernames.push(u);
+      }
     });
     res.send(filteredUsernames[GenerateRandomNumber(filteredUsernames.length)]);
   } else {
